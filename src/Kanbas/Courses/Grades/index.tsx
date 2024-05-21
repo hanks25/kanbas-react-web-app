@@ -1,6 +1,6 @@
 import { FaGear } from "react-icons/fa6";
 import { RiArrowDownWideFill, RiArrowDownSLine } from "react-icons/ri";
-import { CiExport, CiFilter, CiImport } from "react-icons/ci";
+import { CiExport, CiFilter, CiImport, CiSearch } from "react-icons/ci";
 import Content from "./content";
 export default function Grades() {
     return (
@@ -24,10 +24,13 @@ export default function Grades() {
                     <div className="col">
                         <p className="mb-2 fw-bold fs-3">Student Names</p>
                         <div className="input-group">
+                            <span className="input-group-text bg-white border-end-0">
+                                <CiSearch className="text-muted" />
+                            </span>
                             <input
                                 type="text"
                                 className="form-control fs-5"
-                                placeholder="&#xf002; Search Students"
+                                placeholder=" Search Students"
                                 id="wd-grades-students-search"
                                 style={{
                                     fontFamily: "Arial, FontAwesome",
@@ -42,11 +45,14 @@ export default function Grades() {
                     <div className="col">
                         <p className="mb-2 fw-bold fs-3">Assignment Names</p>
                         <div className="input-group">
+                            <span className="input-group-text bg-white border-end-0">
+                                <CiSearch className="text-muted" />
+                            </span>
                             <input
                                 type="text"
                                 className="form-control fs-5"
                                 id="wd-grades-assignments-search"
-                                placeholder="&#xf002; Search Assignments"
+                                placeholder="Search Assignments"
                                 style={{
                                     fontFamily: "Arial, FontAwesome",
                                     minWidth: "160px",
