@@ -1,0 +1,6 @@
+#wd-grades .btn-secondary {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #e7eaed;
+    --bs-btn-border-color: #e7eaed;
+    --bs-btn-hover-color: #fff;
+}
