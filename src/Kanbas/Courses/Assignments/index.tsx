@@ -5,11 +5,16 @@ import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPenToSquare } from "react-icons/fa6";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { assignments } from "../../Database";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAssignment, addAssignment, updateAssignment } from "./reducer";
 export default function Assignments() {
   const { cid } = useParams();
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <div id="wd-assignments">
       <div className="d-flex text-nowrap mb-5">
@@ -37,6 +42,13 @@ export default function Assignments() {
           id="wd-add-assignment"
           className="float-end btn btn-lg btn-danger"
           style={{ borderRadius: "0.20rem" }}
+          onClick={() => {
+            navigate(
+              `/Kanbas/Courses/${cid}/Assignments/${new Date()
+                .getTime()
+                .toString()}`
+            );
+          }}
         >
           <BsPlus style={{ marginBottom: "2px" }} className="fs-2" />
           Assignment
@@ -65,8 +77,8 @@ export default function Assignments() {
       </div>
 
       <ul id="wd-assignment-list" className="list-group rounded-0">
-        {assignments.filter((a) => a.course === cid)
-          .map((a) => (
+        {assignments.filter((a: any) => a.course === cid)
+          .map((a: any) => (
             <li key={`${a._id}`}
               className="wd-assignment-list-item list-group-item d-flex align-items-center p-4">
               <BsGripVertical className="me-3 fs-3" style={{ minWidth: "28px" }} />
@@ -83,88 +95,18 @@ export default function Assignments() {
                 <span className="text-danger fw-medium">
                   Multiple Modules
                 </span>{" "}
-                | <strong>Not available until</strong> May 6 at
-                12:00am | <strong>Due</strong> May 13 at 11:59pm |
-                100 pts
+                | <strong>Not available until</strong> {a.available_from ? a.available_from : "TBD"} | <strong>Due</strong> {a.due_date ? a.due_date : "TBD"} |
+                {a.points ? a.points : "-"} pts{" "}
               </div>
-              <AssignmentControlButtons />
+              <AssignmentControlButtons
+                key={a._id}
+                assignmentTitle={a.title}
+                assignmentId={a._id}
+                deleteAssignment={(assignmentId) =>
+                  dispatch(deleteAssignment(assignmentId))
+                } />
             </li>
           ))}
-        {/* <li className="wd-assignment-list-item list-group-item d-flex align-items-center p-4">
-                    <BsGripVertical
-                        className="me-3 fs-3"
-                        style={{ minWidth: "28px" }}
-                    />
-                    <FaPenToSquare
-                        className="fs-4 me-3 text-success"
-                        style={{ minWidth: "28px" }}
-                    />
-                    <div className="text-secondary flex-fill fs-5 me-3">
-                        <a
-                            className="wd-assignment-link text-black text-decoration-none fs-4 fw-bold"
-                            href="#/Kanbas/Courses/1234/Assignments/123"
-                        >
-                            A1 - ENV + HTML
-                        </a>
-                        <br />
-                        <span className="text-danger fw-medium">
-                            Multiple Modules
-                        </span>{" "}
-                        | <strong>Not available until</strong> May 6 at 12:00am
-                        | <strong>Due</strong> May 13 at 11:59pm | 100 pts
-                    </div>
-                    <AssignmentControlButtons />
-                </li>
-                <li className="wd-assignment-list-item list-group-item d-flex align-items-center p-4">
-                    <BsGripVertical
-                        className="me-3 fs-3"
-                        style={{ minWidth: "28px" }}
-                    />
-                    <FaPenToSquare
-                        className="fs-4 me-3 text-success"
-                        style={{ minWidth: "28px" }}
-                    />
-                    <div className="text-secondary flex-fill fs-5 me-3">
-                        <a
-                            className="wd-assignment-link text-black text-decoration-none fs-4 fw-bold"
-                            href="#/Kanbas/Courses/1234/Assignments/123"
-                        >
-                            A2 - CSS + BOOTSTRAP
-                        </a>
-                        <br />
-                        <span className="text-danger fw-medium">
-                            Multiple Modules
-                        </span>{" "}
-                        | <strong>Not available until</strong> May 13 at 12:00am
-                        | <strong>Due</strong> May 20 at 11:59pm | 100 pts
-                    </div>
-                    <AssignmentControlButtons />
-                </li>
-                <li className="wd-assignment-list-item list-group-item d-flex align-items-center p-4">
-                    <BsGripVertical
-                        className="me-3 fs-3"
-                        style={{ minWidth: "28px" }}
-                    />
-                    <FaPenToSquare
-                        className="fs-4 me-3 text-success"
-                        style={{ minWidth: "28px" }}
-                    />
-                    <div className="text-secondary flex-fill fs-5 me-3">
-                        <a
-                            className="wd-assignment-link text-black text-decoration-none fs-4 fw-bold"
-                            href="#/Kanbas/Courses/1234/Assignments/123"
-                        >
-                            A3 - JAVASCRIPT + REACT 
-                        </a>
-                        <br />
-                        <span className="text-danger fw-medium">
-                            Multiple Modules
-                        </span>{" "}
-                        | <strong>Not available until</strong> May 21 at 12:00am
-                        | <strong>Due</strong> May 28 at 11:59pm | 100 pts
-                    </div>
-                    <AssignmentControlButtons />
-                </li> */}
       </ul>
     </div>
   );
