@@ -7,13 +7,22 @@ import { FaPenToSquare } from "react-icons/fa6";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import * as client from "./client";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteAssignment, addAssignment, updateAssignment } from "./reducer";
+import { deleteAssignment, addAssignment, updateAssignment, setAssignments } from "./reducer";
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   return (
     <div id="wd-assignments">

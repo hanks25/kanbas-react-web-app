@@ -2,9 +2,11 @@ import { useParams } from "react-router";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import * as client from "./client";
 import { addAssignment, updateAssignment, deleteAssignment } from "./reducer"
 export default function AssignmentEditor() {
 	const { aid, cid } = useParams();
+	const [errorMessage, setErrorMessage] = useState(null);
 	const { assignments } = useSelector(
 		(state: any) => state.assignmentsReducer
 	);
@@ -26,6 +28,19 @@ export default function AssignmentEditor() {
 				available_untill: `${d.getFullYear()}-${d.getMonth() < 9 ? ("0" + (d.getMonth() + 1)) : d.getMonth() + 1}-${d.getDate() < 10 ? ("0" + d.getDate()) : d.getDate()}`,
 			}
 	);
+	const createAssignment = async (assignment: any) => {
+		const newAssignment = await client.createAssignment(cid as string, assignment);
+		dispatch(addAssignment(newAssignment));
+	};
+
+	const saveAssignment = async (assignment: any) => {
+		try {
+			await client.updateAssignment(assignment);
+			dispatch(updateAssignment(assignment));
+		} catch (error: any) {
+			setErrorMessage(error.response.data.message);
+		};
+	};
 
 	return (
 		<div id="wd-assignments-editor" className="container ms-1">
@@ -268,7 +283,7 @@ export default function AssignmentEditor() {
 					to={`/Kanbas/Courses/${cid}/Assignments`}
 					className="btn btn-danger rounded-1"
 					onClick={() => {
-						findResult ? dispatch(updateAssignment(assignment)) : dispatch(addAssignment(assignment))
+						findResult ? saveAssignment(assignment) : createAssignment(assignment)
 					}}
 				>
 					Save

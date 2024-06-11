@@ -9,24 +9,6 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse,
 		deleteCourse: (course: any) => void;
 		updateCourse: () => void;
 	}) {
-	// const images = [
-	// 	"algorithms.jpg",
-	// 	"cloud.jpg",
-	// 	"compiler.jpg",
-	// 	"java.jpg",
-	// 	"Math.jpg",
-	// 	"python.jpg",
-	// 	"reactjs.jpg",
-	// 	"rust.png",
-	// 	"teslabot.jpg",
-	// 	"pencil.jpg",
-	// 	"stacked.jpg"
-	// ];
-
-	// const getRandomImage = () => {
-	// 	const randomIndex = Math.floor(Math.random() * images.length);
-	// 	return images[randomIndex];
-	// };
 
 
 	return (
