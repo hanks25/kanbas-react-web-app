@@ -9,7 +9,7 @@ import Grades from "./Grades";
 import PeopleTable from "./People/Table";
 export default function Courses({courses}:{courses: any[]}) {
     const { cid } = useParams();
-    const course = courses.find((course) => course._id === cid);
+    const course = courses.find((course) => course.number === cid);
     const { pathname } = useLocation();
     return (
         <div id="wd-courses">

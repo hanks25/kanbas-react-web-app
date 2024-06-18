@@ -40,9 +40,15 @@ export default function Kanbas() {
 	const [courses, setCourses] = useState<any[]>([]);
 
 	const fetchCourses = async () => {
-		let fetchedCourses = await client.fetchAllCourses();
-		setCourses(fetchedCourses);
-	};
+        let fetchedCourses = await client.fetchAllCourses();
+        fetchedCourses = fetchedCourses.map((c: any) => {
+            if (!c.image) {
+                return { ...c, image: `/${getRandomImage()}` };
+            }
+            return c;
+        });
+        setCourses(fetchedCourses);
+    };
 	useEffect(() => {
 		fetchCourses();
 	}, []);
